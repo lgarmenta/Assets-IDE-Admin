@@ -21,6 +21,8 @@ def get_env_variable(key: str, default_value: Optional[str] = None) -> str:
 def download_file(
     url: str, path: str, headers: Optional[Dict[str, str]] = None
 ) -> bytes:
+    headers = headers or {}
+    headers["Authorization"] = f"token {os.getenv('GH_TOKEN')}"
     with requests.get(url, headers=headers, stream=True) as r:
         r.raise_for_status()
         with open(path, "wb") as f:
